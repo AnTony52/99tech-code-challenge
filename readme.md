@@ -64,12 +64,48 @@ sum_to_n(5) = 15
 
 ---
 
-## Problem 2: Fancy Form
+### Problem 2 — Fancy Form
+Location: `src/problem2`
 
-*To be implemented*
+Tech stack:
+- Vite
+- React
+- TypeScript
 
+Highlights:
+- Rebuilt the provided static template as a small Vite app
+- Used normalized market price data to compute exchange rates
+- Added validation, loading state, and swap direction interaction
+
+Run locally:
+```bash
+cd src/problem2
+npm install
+npm run dev
 ---
 
-## Problem 3: Messy React
+### Problem 3 — Messy React
 
-*To be implemented*
+Location: `src/problem3`
+
+#### Overview
+Refactored a flawed React implementation with a focus on correctness, performance, and code clarity.
+
+#### Key Improvements
+- Identified and fixed logical inconsistencies in data processing
+- Improved TypeScript typings to ensure safer and more predictable behavior
+- Eliminated unnecessary computations and redundant transformations
+- Refactored component structure for better readability and reuse
+- Applied clearer naming and separation of concerns
+
+#### Technical Highlights
+- Optimized filtering and sorting logic to avoid wasted renders
+- Ensured stable data flow and deterministic UI output
+- Reduced unnecessary re-renders by controlling dependencies
+- Improved hook usage and state derivation
+
+#### Outcome
+The refactored solution is:
+- More maintainable and easier to reason about
+- Safer with stronger type guarantees
+- Closer to production-ready React standards
