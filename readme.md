@@ -82,6 +82,8 @@ Run locally:
 cd src/problem2
 npm install
 npm run dev
+```
+
 ---
 
 ### Problem 3 — Messy React
