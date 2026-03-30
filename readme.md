@@ -67,6 +67,9 @@ sum_to_n(5) = 15
 ### Problem 2 — Fancy Form
 Location: `src/problem2`
 
+**Live Demo:**
+https://bolt.new/~/vitejs-vite-d5vytqsw
+
 Tech stack:
 - Vite
 - React
