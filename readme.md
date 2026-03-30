@@ -68,7 +68,7 @@ sum_to_n(5) = 15
 Location: `src/problem2`
 
 **Live Demo:**
-https://bolt.new/~/vitejs-vite-d5vytqsw
+https://99tech-code-challenge-pink.vercel.app/
 
 Tech stack:
 - Vite
