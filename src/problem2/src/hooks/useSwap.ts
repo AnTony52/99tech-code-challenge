@@ -1,10 +1,8 @@
 import { useMemo, useState } from 'react';
-import { PRICE_DATA } from '../data/prices';
 import { calculateConvertedAmount, calculateExchangeRate } from '../utils/calculateRate';
 import { getCurrencyOptions, normalizePrices } from '../utils/normalizePrices';
+import { usePricesQuery } from './usePricesQuery';
 
-const normalizedPrices = normalizePrices(PRICE_DATA);
-const currencyOptions = getCurrencyOptions(normalizedPrices);
 
 export function useSwap() {
   const [amount, setAmount] = useState('1');
@@ -13,10 +11,24 @@ export function useSwap() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const { data: pricesData, isLoading: isPricesLoading, isError: isPricesError } = usePricesQuery();
+
+  const normalizedPrices = useMemo(
+    () => normalizePrices(pricesData ?? []),
+    [pricesData]
+  )
+
+  const currencyOptions = useMemo(() => {
+    return getCurrencyOptions(normalizedPrices);
+  }, [normalizedPrices]);
+  
+  const hasPrices = currencyOptions.length > 0;
+
   const numericAmount = Number(amount);
 
   const isAmountValid = amount.trim() !== '' && !Number.isNaN(numericAmount) && numericAmount > 0;
   const isSameCurrency = fromCurrency === toCurrency;
+
 
   const rate = useMemo(() => {
     if (isSameCurrency) return 1;
@@ -24,10 +36,10 @@ export function useSwap() {
     const fromPrice = normalizedPrices[fromCurrency]?.price;
     const toPrice = normalizedPrices[toCurrency]?.price;
 
-    if (!fromPrice || !toPrice) return null;
+    if (fromPrice == null || toPrice == null || toPrice <= 0) return null;
 
     return calculateExchangeRate(fromPrice, toPrice);
-  }, [fromCurrency, toCurrency, isSameCurrency]);
+  }, [fromCurrency, toCurrency, isSameCurrency, normalizedPrices]);
 
   const convertedAmount = useMemo(() => {
     if (!isAmountValid || rate === null) return '';
@@ -38,10 +50,21 @@ export function useSwap() {
   function swapDirection() {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
+    setError('');
   }
   
   async function handleSwap() {
     setError('');
+
+    if (isPricesLoading) {
+      setError('Prices are loading. Please wait...');
+      return;
+    }
+
+    if (isPricesError || !hasPrices) {
+      setError('Price data is unavailable. Please try again later.');
+      return;
+    }
 
     if (!isAmountValid) {
       setError('Please enter a valid amount greater than 0.');
@@ -83,5 +106,8 @@ export function useSwap() {
     currencyOptions,
     handleSwap,
     swapDirection,
+    isPricesLoading,
+    isPricesError,
+    hasPrices,
   };
 }
